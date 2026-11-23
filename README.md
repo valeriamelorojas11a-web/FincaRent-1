@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
@@ -57,3 +58,13 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+=======
+OBJETIVO DEL PRODUCTO
+Consolidar una plataforma web integral, confiable y fácil de usar para el alquiler de fincas recreativas, enriqueciendo la experiencia de hospedaje mediante la gestión de servicios adicionales personalizados 
+ como personal de servicio doméstico y seguridad privada, con trazabilidad completa en cada reserva.
+
+ 
+OBJETIVO DEL SPRINT
+Entregar el módulo funcional de servicios extras de *Fincarent* conectado a la base de datos (fincarent_db), integrando las entidades (ServicioExtra, Reserva y Finca)
+ la precarga de opciones de empleada de servicios y seguridad, y la vista web operativa para seleccionar, asignar, consultar, editar y eliminar servicios adicionales en las reservas.
+>>>>>>> 4e53349f91627dfc6c8eea56512f342b0e25deb9

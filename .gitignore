@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 *.log
 .DS_Store
 .env
@@ -22,3 +23,16 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+=======
+/target/
+.mvn/
+mvnw
+mvnw.cmd
+.classpath
+.project
+.settings/
+.vscode/
+.idea/
+*.iml
+*.log
+>>>>>>> 4e53349f91627dfc6c8eea56512f342b0e25deb9
