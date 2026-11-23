@@ -22,7 +22,32 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- Script  -->
-<script src="{{ asset('js/app.js') }}"></script>
+    <!-- Script -->
+    <script src="{{ asset('js/app.js') }}"></script>
+
+    <!-- Script Modo Oscuro -->
+    <script>
+        function aplicarTema(esOscuro) {
+            document.body.classList.toggle('dark-mode', esOscuro);
+            localStorage.setItem('fincarent_dark_mode', esOscuro ? '1' : '0');
+
+            const icono = document.getElementById('iconoTema');
+            const texto = document.getElementById('textoTema');
+            if (icono && texto) {
+                icono.className = esOscuro ? 'bi bi-sun-fill' : 'bi bi-moon-stars-fill';
+                texto.textContent = esOscuro ? 'Modo claro' : 'Modo oscuro';
+            }
+        }
+
+        function toggleDarkMode() {
+            const esOscuroActual = document.body.classList.contains('dark-mode');
+            aplicarTema(!esOscuroActual);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const guardado = localStorage.getItem('fincarent_dark_mode') === '1';
+            aplicarTema(guardado);
+        });
+    </script>
 </body>
 </html>

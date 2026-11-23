@@ -5,7 +5,7 @@
 @section('content')
 
 <!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg navbar-dark">
+<nav class="navbar navbar-expand-lg sticky-top">
     <div class="container">
         <a class="navbar-brand fw-bold" href="/index">
             <i class="bi bi-house-heart-fill"></i>
@@ -19,21 +19,29 @@
         <div class="collapse navbar-collapse" id="menuNavbar">
             <ul class="navbar-nav ms-4">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">Inicio</a>
+                    <a class="nav-link" href="#">Inicio</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="#sobre">Sobre Nosotros</a>
+                    <a class="nav-link" href="#sobre">Sobre Nosotros</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="#servicios">Servicios</a>
+                    <a class="nav-link" href="#servicios">Servicios</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="#contacto">Contacto</a>
+                    <a class="nav-link" href="#fincas">Catálogo</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#contacto">Contacto</a>
                 </li>
             </ul>
 
-            <div class="ms-auto">
-                <button class="btn btn-light" onclick="cerrarSesion()">
+            <div class="ms-auto d-flex align-items-center gap-2 mt-2 mt-lg-0">
+                <button type="button" class="btn-theme-toggle" onclick="toggleDarkMode()">
+                    <i id="iconoTema" class="bi bi-moon-stars-fill"></i>
+                    <span id="textoTema">Modo oscuro</span>
+                </button>
+
+                <button type="button" class="btn btn-outline-success" onclick="cerrarSesion()">
                     Cerrar sesión
                 </button>
             </div>
@@ -45,17 +53,17 @@
 <section class="hero">
     <div class="container text-center">
         <h1>La mejor página de fincas</h1>
-        <p>Selecciona tu finca preferida</p>
-        <a href="#fincas" class="btn btn-success btn-lg">
-    Reserva ahora
-</a>
+        <p>Descubre fincas campestres, casas de descanso y espacios ideales para desconectarte con toda comodidad.</p>
+        <a href="#fincas" class="btn btn-success btn-lg px-4">
+            Explorar catálogo
+        </a>
     </div>
 </section>
 
 <!-- SOBRE NOSOTROS -->
 <section id="sobre" class="container py-5">
-    <h2 class="text-center mb-4">Sobre Nosotros</h2>
-    <p class="text-center">
+    <h2 class="text-center mb-3">Sobre Nosotros</h2>
+    <p class="text-center text-muted mx-auto" style="max-width: 720px;">
         En FincaRent conectamos personas con las mejores fincas para descansar,
         celebrar eventos y disfrutar momentos inolvidables. Nuestro objetivo es
         hacer que reservar una finca sea rápido, seguro y sencillo.
@@ -63,119 +71,297 @@
 </section>
 
 <!-- SERVICIOS -->
-<section id="servicios" class="container py-5">
+<section id="servicios" class="container py-4">
     <h2 class="text-center mb-4">Nuestros Servicios</h2>
-    <div class="row">
+    <div class="row g-4">
         <div class="col-md-4 text-center">
-            <i class="bi bi-house-check-fill display-4 text-success"></i>
-            <h4>Reservas</h4>
-            <p>Reserva fincas en pocos minutos.</p>
+            <div class="card p-4 h-100">
+                <i class="bi bi-house-check-fill display-4 text-success mb-2"></i>
+                <h4>Reservas</h4>
+                <p class="text-muted mb-0">Reserva fincas en pocos minutos con confirmación inmediata.</p>
+            </div>
         </div>
         <div class="col-md-4 text-center">
-            <i class="bi bi-shield-check display-4 text-success"></i>
-            <h4>Seguridad</h4>
-            <p>Propiedades verificadas.</p>
+            <div class="card p-4 h-100">
+                <i class="bi bi-shield-check display-4 text-success mb-2"></i>
+                <h4>Seguridad</h4>
+                <p class="text-muted mb-0">Propiedades verificadas y protocolos confiables para tu estadía.</p>
+            </div>
         </div>
         <div class="col-md-4 text-center">
-            <i class="bi bi-headset display-4 text-success"></i>
-            <h4>Soporte</h4>
-            <p>Atención 24/7.</p>
+            <div class="card p-4 h-100">
+                <i class="bi bi-headset display-4 text-success mb-2"></i>
+                <h4>Soporte</h4>
+                <p class="text-muted mb-0">Atención 24/7 para acompañarte antes y durante tu viaje.</p>
+            </div>
         </div>
     </div>
 </section>
 
-<!-- CONTACTO -->
-<section id="contacto" class="container py-5">
-    <h2 class="text-center mb-4">Contáctanos</h2>
-    <form>
-        <div class="mb-3">
-            <input type="text" class="form-control" placeholder="Nombre">
-        </div>
-        <div class="mb-3">
-            <input type="email" class="form-control" placeholder="Correo">
-        </div>
-        <div class="mb-3">
-            <textarea class="form-control" rows="5" placeholder="Escribe tu mensaje"></textarea>
-        </div>
-        <button type="button" class="btn btn-success">Enviar</button>
-    </form>
-</section>
-
-<!-- FINCAS -->
+<!-- CATÁLOGO DE FINCAS -->
 <section id="fincas" class="container mt-5 mb-5">
-    <h2 class="text-center mb-4">Fincas Disponibles</h2>
+    <h2 class="text-center mb-4">Catálogo de Fincas Disponibles</h2>
 
     <!-- FILTROS -->
-    <div class="row mb-4">
-        <div class="col-md-4 mb-2">
-            <input type="text" id="buscador" class="form-control" placeholder="Buscar finca...">
+    <div class="row g-2 mb-4">
+        <div class="col-md-4">
+            <input type="text" id="buscador" class="form-control" placeholder="Buscar finca o característica..." oninput="filtrarFincas()">
         </div>
-        <div class="col-md-4 mb-2">
-            <select id="filtroPrecio" class="form-select">
-                <option value="">Filtrar por precio</option>
+        <div class="col-md-3">
+            <select id="filtroPrecio" class="form-select" onchange="filtrarFincas()">
+                <option value="">Todos los precios</option>
                 <option value="300000">$300.000</option>
                 <option value="500000">$500.000</option>
                 <option value="800000">$800.000</option>
             </select>
         </div>
-        <div class="col-md-4 mb-2">
-            <button class="btn btn-success w-100" onclick="filtrarFincas()">Filtrar</button>
+        <div class="col-md-3">
+            <select id="filtroCategoria" class="form-select" onchange="filtrarFincas()">
+                <option value="">Todas las categorías</option>
+                <option value="Campestre">Campestre</option>
+                <option value="Premium">Premium</option>
+                <option value="Luxury">Luxury</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button type="button" class="btn btn-success w-100" onclick="filtrarFincas()">Filtrar</button>
         </div>
     </div>
 
     <!-- TARJETAS -->
-    <div class="row g-4">
-        <!-- FINCA 1 -->
-        <div class="col-md-4 finca" data-precio="300000">
-            <div class="card shadow">
-                <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994" class="card-img-top">
-                <div class="card-body">
-                    <h4>Finca Campestre</h4>
-                    <p>Piscina, wifi y zonas verdes.</p>
-                    <h5>$300.000</h5>
-                    <button class="btn btn-success w-100"
-        onclick="reservarFinca('Finca Campestre', 300000)">
-    Reservar
-</button>
+    <div class="row g-4" id="listaFincas">
+        <!-- 1 -->
+        <div class="col-md-4 finca" data-precio="300000" data-categoria="Campestre">
+            <div class="card h-100">
+                <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994" class="card-img-top" alt="Finca Campestre">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start gap-2 mb-1">
+                        <h4 class="mb-0">Finca Campestre</h4>
+                        <span class="badge bg-success-subtle text-success border border-success-subtle">Campestre</span>
+                    </div>
+                    <p class="text-muted small">Piscina, wifi y amplias zonas verdes ideales para descansar en familia.</p>
+                    <div class="mb-3">
+                        <span class="badge-servicio">Piscina</span>
+                        <span class="badge-servicio">Wi-Fi</span>
+                        <span class="badge-servicio">Zonas verdes</span>
+                    </div>
+                    <div class="mt-auto">
+                        <div class="precio-tag">$300.000</div>
+                        <button type="button" class="btn btn-success w-100" onclick="reservarFinca('Finca Campestre', 300000)">Reservar</button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- FINCA 2 -->
-        <div class="col-md-4 finca" data-precio="500000">
-            <div class="card shadow">
-                <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be" class="card-img-top">
-                <div class="card-body">
-                    <h4>Finca Premium</h4>
-                    <p>Jacuzzi y vista panorámica.</p>
-                    <h5>$500.000</h5>
-                   <button class="btn btn-success w-100"
-        onclick="reservarFinca('Finca Premium', 500000)">
-    Reservar
-</button>
+        <!-- 2 -->
+        <div class="col-md-4 finca" data-precio="500000" data-categoria="Premium">
+            <div class="card h-100">
+                <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be" class="card-img-top" alt="Finca Premium">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start gap-2 mb-1">
+                        <h4 class="mb-0">Finca Premium</h4>
+                        <span class="badge bg-success-subtle text-success border border-success-subtle">Premium</span>
+                    </div>
+                    <p class="text-muted small">Jacuzzi climatizado, zona BBQ y vista panorámica a la montaña.</p>
+                    <div class="mb-3">
+                        <span class="badge-servicio">Jacuzzi</span>
+                        <span class="badge-servicio">BBQ</span>
+                        <span class="badge-servicio">Vista panorámica</span>
+                    </div>
+                    <div class="mt-auto">
+                        <div class="precio-tag">$500.000</div>
+                        <button type="button" class="btn btn-success w-100" onclick="reservarFinca('Finca Premium', 500000)">Reservar</button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- FINCA 3 -->
-        <div class="col-md-4 finca" data-precio="800000">
-            <div class="card shadow">
-                <img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d" class="card-img-top">
-                <div class="card-body">
-                    <h4>Finca Luxury</h4>
-                    <p>Cancha privada y piscina gigante.</p>
-                    <h5>$800.000</h5>
-                    <button class="btn btn-success w-100"
-        onclick="reservarFinca('Finca Luxury', 800000)">
-    Reservar
-</button>
+        <!-- 3 -->
+        <div class="col-md-4 finca" data-precio="800000" data-categoria="Luxury">
+            <div class="card h-100">
+                <img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d" class="card-img-top" alt="Finca Luxury">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start gap-2 mb-1">
+                        <h4 class="mb-0">Finca Luxury</h4>
+                        <span class="badge bg-success-subtle text-success border border-success-subtle">Luxury</span>
+                    </div>
+                    <p class="text-muted small">Cancha privada, piscina gigante y amplios espacios para eventos.</p>
+                    <div class="mb-3">
+                        <span class="badge-servicio">Cancha privada</span>
+                        <span class="badge-servicio">Piscina</span>
+                        <span class="badge-servicio">Eventos</span>
+                    </div>
+                    <div class="mt-auto">
+                        <div class="precio-tag">$800.000</div>
+                        <button type="button" class="btn btn-success w-100" onclick="reservarFinca('Finca Luxury', 800000)">Reservar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4 -->
+        <div class="col-md-4 finca" data-precio="300000" data-categoria="Campestre">
+            <div class="card h-100">
+                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750" class="card-img-top" alt="Villa El Mirador">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start gap-2 mb-1">
+                        <h4 class="mb-0">Villa El Mirador</h4>
+                        <span class="badge bg-success-subtle text-success border border-success-subtle">Campestre</span>
+                    </div>
+                    <p class="text-muted small">Rodeada de árboles nativos, hamacas, fogata exterior y sendero ecológico.</p>
+                    <div class="mb-3">
+                        <span class="badge-servicio">Fogata</span>
+                        <span class="badge-servicio">Hamacas</span>
+                        <span class="badge-servicio">Naturaleza</span>
+                    </div>
+                    <div class="mt-auto">
+                        <div class="precio-tag">$300.000</div>
+                        <button type="button" class="btn btn-success w-100" onclick="reservarFinca('Villa El Mirador', 300000)">Reservar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5 -->
+        <div class="col-md-4 finca" data-precio="500000" data-categoria="Premium">
+            <div class="card h-100">
+                <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9" class="card-img-top" alt="Hacienda La Esmeralda">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start gap-2 mb-1">
+                        <h4 class="mb-0">Hacienda La Esmeralda</h4>
+                        <span class="badge bg-success-subtle text-success border border-success-subtle">Premium</span>
+                    </div>
+                    <p class="text-muted small">Arquitectura colonial, corredor amplio, cocina equipada y parqueadero.</p>
+                    <div class="mb-3">
+                        <span class="badge-servicio">Parqueadero</span>
+                        <span class="badge-servicio">Cocina amplia</span>
+                        <span class="badge-servicio">Descanso</span>
+                    </div>
+                    <div class="mt-auto">
+                        <div class="precio-tag">$500.000</div>
+                        <button type="button" class="btn btn-success w-100" onclick="reservarFinca('Hacienda La Esmeralda', 500000)">Reservar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6 -->
+        <div class="col-md-4 finca" data-precio="800000" data-categoria="Luxury">
+            <div class="card h-100">
+                <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c" class="card-img-top" alt="Quinta Bosque Real">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start gap-2 mb-1">
+                        <h4 class="mb-0">Quinta Bosque Real</h4>
+                        <span class="badge bg-success-subtle text-success border border-success-subtle">Luxury</span>
+                    </div>
+                    <p class="text-muted small">Terraza lounge, piscina infinita, sala de juegos y privacidad total.</p>
+                    <div class="mb-3">
+                        <span class="badge-servicio">Piscina infinita</span>
+                        <span class="badge-servicio">Sala de juegos</span>
+                        <span class="badge-servicio">Privada</span>
+                    </div>
+                    <div class="mt-auto">
+                        <div class="precio-tag">$800.000</div>
+                        <button type="button" class="btn btn-success w-100" onclick="reservarFinca('Quinta Bosque Real', 800000)">Reservar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7 -->
+        <div class="col-md-4 finca" data-precio="300000" data-categoria="Campestre">
+            <div class="card h-100">
+                <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914" class="card-img-top" alt="Finca Los Naranjos">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start gap-2 mb-1">
+                        <h4 class="mb-0">Finca Los Naranjos</h4>
+                        <span class="badge bg-success-subtle text-success border border-success-subtle">Campestre</span>
+                    </div>
+                    <p class="text-muted small">Ambiente tranquilo con huerta frutal, kiosco y zona de descanso.</p>
+                    <div class="mb-3">
+                        <span class="badge-servicio">Kiosco</span>
+                        <span class="badge-servicio">Tranquila</span>
+                        <span class="badge-servicio">Familiar</span>
+                    </div>
+                    <div class="mt-auto">
+                        <div class="precio-tag">$300.000</div>
+                        <button type="button" class="btn btn-success w-100" onclick="reservarFinca('Finca Los Naranjos', 300000)">Reservar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 8 -->
+        <div class="col-md-4 finca" data-precio="500000" data-categoria="Premium">
+            <div class="card h-100">
+                <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6" class="card-img-top" alt="Finca Vista del Valle">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start gap-2 mb-1">
+                        <h4 class="mb-0">Finca Vista del Valle</h4>
+                        <span class="badge bg-success-subtle text-success border border-success-subtle">Premium</span>
+                    </div>
+                    <p class="text-muted small">Ideal para fines de semana con amigos, piscina iluminada y asador.</p>
+                    <div class="mb-3">
+                        <span class="badge-servicio">Asador</span>
+                        <span class="badge-servicio">Piscina iluminada</span>
+                        <span class="badge-servicio">Amigos</span>
+                    </div>
+                    <div class="mt-auto">
+                        <div class="precio-tag">$500.000</div>
+                        <button type="button" class="btn btn-success w-100" onclick="reservarFinca('Finca Vista del Valle', 500000)">Reservar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 9 -->
+        <div class="col-md-4 finca" data-precio="800000" data-categoria="Luxury">
+            <div class="card h-100">
+                <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811" class="card-img-top" alt="Reserva Paraíso Verde">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start gap-2 mb-1">
+                        <h4 class="mb-0">Reserva Paraíso Verde</h4>
+                        <span class="badge bg-success-subtle text-success border border-success-subtle">Luxury</span>
+                    </div>
+                    <p class="text-muted small">Gran extensión de terreno, salón social, jacuzzi y vistas incomparables.</p>
+                    <div class="mb-3">
+                        <span class="badge-servicio">Salón social</span>
+                        <span class="badge-servicio">Jacuzzi</span>
+                        <span class="badge-servicio">Gran espacio</span>
+                    </div>
+                    <div class="mt-auto">
+                        <div class="precio-tag">$800.000</div>
+                        <button type="button" class="btn btn-success w-100" onclick="reservarFinca('Reserva Paraíso Verde', 800000)">Reservar</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <p id="sinResultados" class="text-center text-muted mt-4 d-none">
+        No se encontraron fincas con esos filtros.
+    </p>
 </section>
 
-<!-- Modal Reserva Exitosa -->
+<!-- CONTACTO -->
+<section id="contacto" class="container py-5">
+    <div class="card p-4 p-md-5 mx-auto" style="max-width: 720px;">
+        <h2 class="text-center mb-4">Contáctanos</h2>
+        <form>
+            <div class="mb-3">
+                <input type="text" class="form-control" placeholder="Nombre">
+            </div>
+            <div class="mb-3">
+                <input type="email" class="form-control" placeholder="Correo">
+            </div>
+            <div class="mb-3">
+                <textarea class="form-control" rows="4" placeholder="Escribe tu mensaje"></textarea>
+            </div>
+            <button type="button" class="btn btn-success w-100">Enviar</button>
+        </form>
+    </div>
+</section>
+
 <!-- MODAL DE RESERVA -->
 <div class="modal fade" id="modalReserva" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
@@ -196,14 +382,8 @@
 
                 <div class="modal-body">
 
-                    <!-- Finca seleccionada -->
-                    <input type="hidden"
-                           id="fincaReserva"
-                           name="finca">
-
-                    <input type="hidden"
-                           id="precioReserva"
-                           name="precio">
+                    <input type="hidden" id="fincaReserva" name="finca">
+                    <input type="hidden" id="precioReserva" name="precio">
 
                     <div class="mb-3">
                         <label class="form-label">Nombre completo</label>
@@ -285,94 +465,3 @@
                 <h5 class="modal-title">
                     Reserva confirmada
                 </h5>
-
-                <button type="button"
-                        class="btn-close btn-close-white"
-                        data-bs-dismiss="modal">
-                </button>
-            </div>
-
-            <div class="modal-body text-center py-4">
-
-                <i class="bi bi-check-circle-fill text-success"
-                   style="font-size: 70px;"></i>
-
-                <h4 class="mt-3">
-                    ¡Reserva realizada exitosamente!
-                </h4>
-
-                <p class="text-muted">
-                    Gracias por elegir <strong>FincaRent</strong>.
-                </p>
-
-            </div>
-
-            <div class="modal-footer">
-                <button type="button"
-                        class="btn btn-success"
-                        data-bs-dismiss="modal">
-                    Aceptar
-                </button>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-@endsection
-
-@if(session('reserva_ok'))
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const modalExito = new bootstrap.Modal(
-            document.getElementById('modalExito')
-        );
-
-        modalExito.show();
-    });
-</script>
-@endif
-
-<script>
-    function cerrarSesion() {
-        window.location.href = "/login";
-    }
-
-    function filtrarFincas() {
-
-        const buscador = document.getElementById("buscador").value.toLowerCase();
-        const precio = document.getElementById("filtroPrecio").value;
-
-        const fincas = document.querySelectorAll(".finca");
-
-        fincas.forEach(function(finca) {
-
-            const nombre = finca.querySelector("h4").textContent.toLowerCase();
-            const precioFinca = finca.getAttribute("data-precio");
-
-            const coincideNombre = nombre.includes(buscador);
-            const coincidePrecio = precio === "" || precioFinca === precio;
-
-            if (coincideNombre && coincidePrecio) {
-                finca.style.display = "";
-            } else {
-                finca.style.display = "none";
-            }
-
-        });
-    }
-
-    function reservarFinca(nombreFinca, precioFinca) {
-
-        // Guardar la finca seleccionada
-        document.getElementById("fincaReserva").value = nombreFinca;
-        document.getElementById("precioReserva").value = precioFinca;
-
-        // Abrir formulario de reserva
-        const modal = new bootstrap.Modal(
-            document.getElementById("modalReserva")
-        );
-
-        modal.show();
-    }
-</script>
