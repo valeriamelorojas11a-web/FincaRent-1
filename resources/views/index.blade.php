@@ -375,6 +375,15 @@
                         data-bs-dismiss="modal">
                 </button>
             </div>
+            @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
             <form method="POST" action="{{ route('reservas.store') }}">
 
@@ -465,3 +474,101 @@
                 <h5 class="modal-title">
                     Reserva confirmada
                 </h5>
+
+                <button type="button"
+                        class="btn-close btn-close-white"
+                        data-bs-dismiss="modal">
+                </button>
+            </div>
+
+            <div class="modal-body text-center py-4">
+
+                <i class="bi bi-check-circle-fill text-success"
+                   style="font-size: 70px;"></i>
+
+                <h4 class="mt-3">
+                    ¡Reserva realizada exitosamente!
+                </h4>
+
+                <p class="text-muted">
+                    Gracias por elegir <strong>FincaRent</strong>.
+                </p>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button"
+                        class="btn btn-success"
+                        data-bs-dismiss="modal">
+                    Aceptar
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    window.cerrarSesion = function () {
+        window.location.href = "/login";
+    };
+
+    window.filtrarFincas = function () {
+        const buscador = document.getElementById("buscador").value.toLowerCase().trim();
+        const precio = document.getElementById("filtroPrecio").value;
+        const categoria = document.getElementById("filtroCategoria").value;
+
+        const fincas = document.querySelectorAll(".finca");
+        let visibles = 0;
+
+        fincas.forEach(function (finca) {
+            const textoTarjeta = finca.textContent.toLowerCase();
+            const precioFinca = finca.getAttribute("data-precio");
+            const categoriaFinca = finca.getAttribute("data-categoria");
+
+            const coincideTexto = buscador === "" || textoTarjeta.includes(buscador);
+            const coincidePrecio = precio === "" || precioFinca === precio;
+            const coincideCategoria = categoria === "" || categoriaFinca === categoria;
+
+            if (coincideTexto && coincidePrecio && coincideCategoria) {
+                finca.style.display = "";
+                visibles++;
+            } else {
+                finca.style.display = "none";
+            }
+        });
+
+        const sinResultados = document.getElementById("sinResultados");
+        if (sinResultados) {
+            sinResultados.classList.toggle("d-none", visibles > 0);
+        }
+    };
+
+    window.reservarFinca = function (nombreFinca, precioFinca) {
+        const inputFinca = document.getElementById("fincaReserva");
+        const inputPrecio = document.getElementById("precioReserva");
+        const modalEl = document.getElementById("modalReserva");
+
+        if (inputFinca) inputFinca.value = nombreFinca;
+        if (inputPrecio) inputPrecio.value = precioFinca;
+
+        if (modalEl && typeof bootstrap !== "undefined") {
+            const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+            modal.show();
+        }
+    };
+</script>
+
+@if(session('reserva_ok'))
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const modalExitoEl = document.getElementById('modalExito');
+        if (modalExitoEl && typeof bootstrap !== 'undefined') {
+            const modalExito = bootstrap.Modal.getOrCreateInstance(modalExitoEl);
+            modalExito.show();
+        }
+    });
+</script>
+@endif
+
+@endsection
