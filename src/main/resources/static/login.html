@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - FincaRent</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <link rel="stylesheet" href="/css/fincarent.css">
+</head>
+
+<body>
+
+    <div id="loginPage">
+        <div class="login-box">
+            <h2 class="text-center mb-4">
+                <i class="bi bi-house-heart-fill"></i>
+                FincaRent
+            </h2>
+
+            <form id="formLogin">
+                <input type="text" id="usuario" class="form-control mb-3" placeholder="Usuario o correo" required>
+                <input type="password" id="password" class="form-control mb-3" placeholder="Contraseña" required>
+
+                <button type="submit" id="btnLogin" class="btn btn-success w-100">
+                    Iniciar Sesión
+                </button>
+            </form>
+
+            <p id="mensaje" class="text-danger mt-3 mb-0 text-center"></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("formLogin").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const usuarioInput = document.getElementById("usuario").value.trim().toLowerCase();
+            const passwordInput = document.getElementById("password").value;
+            const mensajeEl = document.getElementById("mensaje");
+            const btnLogin = document.getElementById("btnLogin");
+
+            mensajeEl.textContent = "";
+            btnLogin.disabled = true;
+
+            try {
+                const resp = await fetch("/api/usuarios", {
+                    headers: { "X-Rol": "ADMINISTRADOR" }
+                });
+
+                if (!resp.ok) {
+                    mensajeEl.textContent = "No se pudo consultar la lista de usuarios en el servidor.";
+                    return;
+                }
+
+                const usuarios = await resp.json();
+                if (!Array.isArray(usuarios) || usuarios.length === 0) {
+                    mensajeEl.textContent = "No hay usuarios registrados en la base de datos.";
+                    return;
+                }
+
+                const encontrado = usuarios.find(u => {
+                    const correo = String(u.correo || u.email || "").toLowerCase();
+                    const nombre = String(u.nombre || u.usuario || u.username || "").toLowerCase();
+                    return usuarioInput === correo || usuarioInput === nombre;
+                });
+
+                if (!encontrado) {
+                    mensajeEl.textContent = "Usuario o correo no encontrado.";
+                    return;
+                }
+
+                if (encontrado.password && String(encontrado.password) !== passwordInput) {
+                    mensajeEl.textContent = "Contraseña incorrecta.";
+                    return;
+                }
+
+                const rol = String(encontrado.rol || "CLIENTE").toUpperCase();
+                localStorage.setItem("fincarent_rol", rol);
+                localStorage.setItem("fincarent_usuario", encontrado.nombre || encontrado.correo || usuarioInput);
+
+                if (rol === "ADMINISTRADOR" || rol === "PROPIETARIO") {
+                    window.location.href = "/dashboard.html";
+                } else {
+                    window.location.href = "/index.html";
+                }
+            } catch (err) {
+                mensajeEl.textContent = "Error de conexión con el servidor.";
+            } finally {
+                btnLogin.disabled = false;
+            }
+        });
+    </script>
+
+</body>
+</html>

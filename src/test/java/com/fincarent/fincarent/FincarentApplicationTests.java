@@ -1,0 +1,13 @@
+package com.fincarent.fincarent;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class FincarentApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
