@@ -44,10 +44,10 @@ public class UsuarioService {
                 .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con id: " + id));
 
         existente.setNombre(datosActualizados.getNombre());
-        existente.setCorreo(datosActualizados.getCorreo());
+        existente.setEmail(datosActualizados.getEmail());
 
-        if (datosActualizados.getPassword() != null && !datosActualizados.getPassword().isBlank()) {
-            existente.setPassword(datosActualizados.getPassword());
+        if (datosActualizados.getContrasena() != null && !datosActualizados.getContrasena().isBlank()) {
+            existente.setContrasena(datosActualizados.getContrasena());
         }
 
         if (datosActualizados.getTipo() != null) {

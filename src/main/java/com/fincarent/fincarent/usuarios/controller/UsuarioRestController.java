@@ -58,7 +58,7 @@ public class UsuarioRestController {
     }
 
     @GetMapping("/{id}/rol")
-    public ResponseEntity> consultarRol(@PathVariable Long id) {
+    public ResponseEntity<?> consultarRol(@PathVariable Long id) {
         TipoUsuario rol = usuarioService.obtenerRol(id);
         return ResponseEntity.ok(Map.of(
                 "id_usuario", id,

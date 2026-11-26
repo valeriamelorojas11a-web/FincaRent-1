@@ -39,6 +39,7 @@ public class ReservaService {
         }
 
         validarFechas(reserva.getFechaEntrada(), reserva.getFechaSalida());
+        validarDisponibilidadFinca(reserva.getFinca(), reserva.getFechaEntrada(), reserva.getFechaSalida(), null);
 
         if (reserva.getEstado() == null || reserva.getEstado().isBlank()) {
             reserva.setEstado("Confirmada");
@@ -55,6 +56,10 @@ public class ReservaService {
         Reserva existente = reservaRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Reserva no encontrada con id: " + id));
 
+        String fincaEfectiva = (datosActualizados.getFinca() != null && !datosActualizados.getFinca().isBlank())
+                ? datosActualizados.getFinca().trim()
+                : existente.getFinca();
+
         LocalDate entrada = (datosActualizados.getFechaEntrada() != null)
                 ? datosActualizados.getFechaEntrada()
                 : existente.getFechaEntrada();
@@ -63,11 +68,12 @@ public class ReservaService {
                 : existente.getFechaSalida();
 
         validarFechas(entrada, salida);
+        validarDisponibilidadFinca(fincaEfectiva, entrada, salida, existente.getId());
 
         existente.setNombre(datosActualizados.getNombre());
         existente.setCorreo(datosActualizados.getCorreo());
         existente.setTelefono(datosActualizados.getTelefono());
-        existente.setFinca(datosActualizados.getFinca());
+        existente.setFinca(fincaEfectiva);
         existente.setPrecio(datosActualizados.getPrecio());
         existente.setFechaEntrada(entrada);
         existente.setFechaSalida(salida);
@@ -102,8 +108,26 @@ public class ReservaService {
     }
 
     private void validarFechas(LocalDate fechaEntrada, LocalDate fechaSalida) {
-        if (fechaEntrada != null && fechaSalida != null && !fechaSalida.isAfter(fechaEntrada)) {
+        if (fechaEntrada == null || fechaSalida == null) {
+            throw new IllegalArgumentException("Las fechas de entrada y salida son obligatorias");
+        }
+        if (!fechaSalida.isAfter(fechaEntrada)) {
             throw new IllegalArgumentException("La fecha de salida debe ser posterior a la fecha de entrada");
+        }
+    }
+
+    private void validarDisponibilidadFinca(String finca, LocalDate fechaEntrada, LocalDate fechaSalida, Long excluirId) {
+        if (finca == null || finca.isBlank()) {
+            throw new IllegalArgumentException("La finca es obligatoria");
+        }
+        boolean ocupada = reservaRepository.existeCruceReserva(
+                finca.trim(),
+                fechaEntrada,
+                fechaSalida,
+                excluirId
+        );
+        if (ocupada) {
+            throw new IllegalArgumentException("La finca '" + finca.trim() + "' ya tiene una reserva en esas fechas");
         }
     }
 }
