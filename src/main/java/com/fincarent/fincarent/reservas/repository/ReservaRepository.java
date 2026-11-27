@@ -12,8 +12,8 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long> {
     @Query("""
             SELECT COUNT(r) > 0
             FROM Reserva r
-            WHERE LOWER(r.finca) = LOWER(:finca)
-              AND (r.estado IS NULL OR LOWER(r.estado) NOT LIKE 'cancel%')
+            WHERE LOWER(TRIM(r.finca)) = LOWER(TRIM(:finca))
+              AND (r.estado IS NULL OR LOWER(TRIM(r.estado)) NOT LIKE 'cancel%')
               AND r.fechaEntrada < :fechaSalida
               AND r.fechaSalida > :fechaEntrada
               AND (:excluirId IS NULL OR r.id <> :excluirId)

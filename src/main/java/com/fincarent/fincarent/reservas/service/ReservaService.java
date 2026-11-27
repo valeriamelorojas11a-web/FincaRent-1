@@ -4,6 +4,7 @@ import com.fincarent.fincarent.reservas.entity.Reserva;
 import com.fincarent.fincarent.reservas.repository.ReservaRepository;
 import com.fincarent.fincarent.usuarios.model.TipoUsuario;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -32,10 +33,15 @@ public class ReservaService {
                 .orElseThrow(() -> new IllegalArgumentException("Reserva no encontrada con id: " + id));
     }
 
+    @Transactional
     public Reserva crearReserva(Reserva reserva, TipoUsuario rolSolicitante) {
         TipoUsuario rolEfectivo = (rolSolicitante != null) ? rolSolicitante : TipoUsuario.CLIENTE;
         if (rolEfectivo != TipoUsuario.CLIENTE && rolEfectivo != TipoUsuario.ADMINISTRADOR) {
             throw new IllegalArgumentException("Solo un CLIENTE o ADMINISTRADOR puede crear una reserva");
+        }
+
+        if (reserva.getFinca() != null) {
+            reserva.setFinca(reserva.getFinca().trim());
         }
 
         validarFechas(reserva.getFechaEntrada(), reserva.getFechaSalida());
@@ -43,11 +49,14 @@ public class ReservaService {
 
         if (reserva.getEstado() == null || reserva.getEstado().isBlank()) {
             reserva.setEstado("Confirmada");
+        } else {
+            reserva.setEstado(reserva.getEstado().trim());
         }
 
         return reservaRepository.save(reserva);
     }
 
+    @Transactional
     public Reserva actualizarReserva(Long id, Reserva datosActualizados, TipoUsuario rolSolicitante) {
         if (rolSolicitante != TipoUsuario.ADMINISTRADOR && rolSolicitante != TipoUsuario.PROPIETARIO) {
             throw new IllegalArgumentException("Solo un ADMINISTRADOR o PROPIETARIO puede actualizar una reserva");
@@ -58,7 +67,7 @@ public class ReservaService {
 
         String fincaEfectiva = (datosActualizados.getFinca() != null && !datosActualizados.getFinca().isBlank())
                 ? datosActualizados.getFinca().trim()
-                : existente.getFinca();
+                : existente.getFinca().trim();
 
         LocalDate entrada = (datosActualizados.getFechaEntrada() != null)
                 ? datosActualizados.getFechaEntrada()
@@ -85,6 +94,7 @@ public class ReservaService {
         return reservaRepository.save(existente);
     }
 
+    @Transactional
     public Reserva actualizarEstado(Long id, String nuevoEstado, TipoUsuario rolSolicitante) {
         if (rolSolicitante != TipoUsuario.ADMINISTRADOR && rolSolicitante != TipoUsuario.PROPIETARIO) {
             throw new IllegalArgumentException("Solo un ADMINISTRADOR o PROPIETARIO puede cambiar el estado de una reserva");
@@ -98,6 +108,7 @@ public class ReservaService {
         return reservaRepository.save(reserva);
     }
 
+    @Transactional
     public void eliminarReserva(Long id, TipoUsuario rolSolicitante) {
         if (rolSolicitante != TipoUsuario.ADMINISTRADOR) {
             throw new IllegalArgumentException("Solo un ADMINISTRADOR puede eliminar una reserva");
